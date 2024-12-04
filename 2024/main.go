@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	_1 "2024/01"
+)
+
+const inputFile = "input.txt"
 
 func main() {
-	fmt.Println("Hello World")
+	_1.Run(inputFile)
 }
