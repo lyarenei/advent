@@ -99,3 +99,38 @@ func GetDiagonalLTR[T any](input [][]T, anchor int, horizontal bool) []T {
 
 	return diag
 }
+
+// GetDiagonalRTL gets a diagonal line in a 2D array.
+// Anchor specifies start on nth col. If horizontal is set to false, it specifies row instead.
+// It is not possible to start "inside", only full diagonals starting from 0 to len() of the array is supported.
+func GetDiagonalRTL[T any](input [][]T, anchor int, horizontal bool) []T {
+	var diag []T
+
+	// Horizontal, anchor specifies starting col
+	if horizontal {
+		x := 0
+		for y := anchor; y >= 0; y-- {
+			if x >= len(input) {
+				break
+			}
+
+			diag = append(diag, input[x][y])
+			x++
+		}
+
+		return diag
+	}
+
+	// Vertical, anchor specifies starting row
+	y := len(input[anchor]) - 1
+	for x := anchor; x < len(input); x++ {
+		if y < 0 {
+			break
+		}
+
+		diag = append(diag, input[x][y])
+		y--
+	}
+
+	return diag
+}

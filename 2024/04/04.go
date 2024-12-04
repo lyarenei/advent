@@ -53,6 +53,7 @@ func search(s string, in [][]rune) int {
 
 	// 7. / right top to left bottom
 	// 8. / left bottom to right top
+	totalCount += diagonalSearchRTL(s, in)
 
 	return totalCount
 }
@@ -93,6 +94,26 @@ func diagonalSearchLTR(s string, in [][]rune) int {
 
 	for i := 0; i < width; i++ {
 		diag := utils.GetDiagonalLTR(in, i, false)
+		stringDiagLine := string(diag)
+		count += strings.Count(stringDiagLine, s)
+		count += strings.Count(stringDiagLine, utils.ReverseString(s))
+	}
+
+	return count
+}
+
+func diagonalSearchRTL(s string, in [][]rune) int {
+	count := 0
+	width := len(in[0])
+	for i := 0; i < width; i++ {
+		diag := utils.GetDiagonalRTL(in, i, true)
+		stringDiagLine := string(diag)
+		count += strings.Count(stringDiagLine, s)
+		count += strings.Count(stringDiagLine, utils.ReverseString(s))
+	}
+
+	for i := 0; i < width; i++ {
+		diag := utils.GetDiagonalRTL(in, i, false)
 		stringDiagLine := string(diag)
 		count += strings.Count(stringDiagLine, s)
 		count += strings.Count(stringDiagLine, utils.ReverseString(s))
