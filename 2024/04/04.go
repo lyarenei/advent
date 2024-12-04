@@ -1,9 +1,11 @@
 package _4
 
 import (
+	"2024/utils"
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func Run(inputFile string) {
@@ -39,6 +41,8 @@ func readFile(fileName string) [][]rune {
 func search(s string, in [][]rune) int {
 	// 1. - left to right
 	// 2. - right to left
+	totalCount := horizontalSearch(s, in)
+
 	// 3. | top to down
 	// 4. | bottom to top
 	// 5. / left bottom to right top
@@ -46,5 +50,16 @@ func search(s string, in [][]rune) int {
 	// 6. \ left top to right bottom
 	// 7. \ right bottom to left top
 
-	return 0
+	return totalCount
+}
+
+func horizontalSearch(s string, in [][]rune) int {
+	count := 0
+	for _, runeLine := range in {
+		stringLine := string(runeLine)
+		count += strings.Count(stringLine, s)
+		count += strings.Count(stringLine, utils.ReverseString(s))
+	}
+
+	return count
 }

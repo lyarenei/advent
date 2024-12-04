@@ -45,3 +45,13 @@ func RemoveAt(arr []int, index int) []int {
 	ret = append(ret, arr[:index]...)
 	return append(ret, arr[index+1:]...)
 }
+
+func ReverseString(s string) string {
+	// Trigger warning: not a performant solution (immutable strings)
+	result := ""
+	for _, v := range s {
+		result = string(v) + result
+	}
+
+	return result
+}
