@@ -47,10 +47,12 @@ func search(s string, in [][]rune) int {
 	// 4. | bottom to top
 	totalCount += verticalSearch(s, in)
 
-	// 5. / left bottom to right top
-	// 5. / right top to left bottom
-	// 6. \ left top to right bottom
-	// 7. \ right bottom to left top
+	// 5. \ left top to right bottom
+	// 6. \ right bottom to left top
+	totalCount += diagonalSearchLTR(s, in)
+
+	// 7. / right top to left bottom
+	// 8. / left bottom to right top
 
 	return totalCount
 }
@@ -74,6 +76,26 @@ func verticalSearch(s string, in [][]rune) int {
 		stringColLine := string(col)
 		count += strings.Count(stringColLine, s)
 		count += strings.Count(stringColLine, utils.ReverseString(s))
+	}
+
+	return count
+}
+
+func diagonalSearchLTR(s string, in [][]rune) int {
+	count := 0
+	width := len(in[0])
+	for i := 0; i < width; i++ {
+		diag := utils.GetDiagonalLTR(in, i, true)
+		stringDiagLine := string(diag)
+		count += strings.Count(stringDiagLine, s)
+		count += strings.Count(stringDiagLine, utils.ReverseString(s))
+	}
+
+	for i := 0; i < width; i++ {
+		diag := utils.GetDiagonalLTR(in, i, false)
+		stringDiagLine := string(diag)
+		count += strings.Count(stringDiagLine, s)
+		count += strings.Count(stringDiagLine, utils.ReverseString(s))
 	}
 
 	return count

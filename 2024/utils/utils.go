@@ -56,6 +56,7 @@ func ReverseString(s string) string {
 	return result
 }
 
+// GetCol gets a nth col, in a 2D array.
 func GetCol[T any](input [][]T, at int) []T {
 	var col []T
 	for _, row := range input {
@@ -63,4 +64,38 @@ func GetCol[T any](input [][]T, at int) []T {
 	}
 
 	return col
+}
+
+// GetDiagonalLTR gets a diagonal line in a 2D array.
+// Anchor specifies start on nth col. If horizontal is set to false, it specifies row instead.
+// It is not possible to start "inside", only full diagonals starting from 0 to len() of the array is supported.
+func GetDiagonalLTR[T any](input [][]T, anchor int, horizontal bool) []T {
+	var diag []T
+
+	// Horizontal, anchor specifies starting col
+	if horizontal {
+		for x := 0; x < len(input); x++ {
+			y := x + anchor
+			if y >= len(input[x]) {
+				break
+			}
+
+			diag = append(diag, input[x][y])
+		}
+
+		return diag
+	}
+
+	// Vertical, anchor specifies starting row
+	y := 0
+	for x := anchor; x < len(input); x++ {
+		if y >= len(input[x]) {
+			break
+		}
+
+		diag = append(diag, input[x][y])
+		y++
+	}
+
+	return diag
 }
