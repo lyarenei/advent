@@ -1,5 +1,7 @@
 package utils
 
+import "strconv"
+
 func AbsInt(x int) int {
 	if x < 0 {
 		return -x
@@ -17,4 +19,25 @@ func AppearsTimes(num int, col []int) int {
 	}
 
 	return times
+}
+
+func StringToIntArray(strArr []string) []int {
+	var numArr []int
+	for _, s := range strArr {
+		num, err := strconv.Atoi(s)
+		if err != nil {
+			panic(err)
+		}
+
+		numArr = append(numArr, num)
+	}
+
+	return numArr
+}
+
+func RemoveAt(arr []int, index int) []int {
+	// P E R F O R M A N C E
+	ret := make([]int, 0, len(arr)-1)
+	ret = append(ret, arr[:index]...)
+	return append(ret, arr[index+1:]...)
 }
