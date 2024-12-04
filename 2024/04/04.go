@@ -45,6 +45,8 @@ func search(s string, in [][]rune) int {
 
 	// 3. | top to down
 	// 4. | bottom to top
+	totalCount += verticalSearch(s, in)
+
 	// 5. / left bottom to right top
 	// 5. / right top to left bottom
 	// 6. \ left top to right bottom
@@ -59,6 +61,19 @@ func horizontalSearch(s string, in [][]rune) int {
 		stringLine := string(runeLine)
 		count += strings.Count(stringLine, s)
 		count += strings.Count(stringLine, utils.ReverseString(s))
+	}
+
+	return count
+}
+
+func verticalSearch(s string, in [][]rune) int {
+	count := 0
+	width := len(in[0])
+	for i := 0; i < width; i++ {
+		col := utils.GetCol(in, i)
+		stringColLine := string(col)
+		count += strings.Count(stringColLine, s)
+		count += strings.Count(stringColLine, utils.ReverseString(s))
 	}
 
 	return count

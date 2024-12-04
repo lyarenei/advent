@@ -55,3 +55,12 @@ func ReverseString(s string) string {
 
 	return result
 }
+
+func GetCol[T any](input [][]T, at int) []T {
+	var col []T
+	for _, row := range input {
+		col = append(col, row[at])
+	}
+
+	return col
+}
