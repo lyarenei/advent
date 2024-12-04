@@ -24,15 +24,19 @@ func AppearsTimes(num int, col []int) int {
 func StringToIntArray(strArr []string) []int {
 	var numArr []int
 	for _, s := range strArr {
-		num, err := strconv.Atoi(s)
-		if err != nil {
-			panic(err)
-		}
-
-		numArr = append(numArr, num)
+		numArr = append(numArr, StringToInt(s))
 	}
 
 	return numArr
+}
+
+func StringToInt(s string) int {
+	num, err := strconv.Atoi(s)
+	if err != nil {
+		panic(err)
+	}
+
+	return num
 }
 
 func RemoveAt(arr []int, index int) []int {
