@@ -4,7 +4,9 @@ import (
 	"2024/utils"
 	"fmt"
 	"os"
+	"reflect"
 	"regexp"
+	"strings"
 )
 
 func Run(inputFile string) {
@@ -12,11 +14,6 @@ func Run(inputFile string) {
 	instr := getInstructions(data)
 	result := calculate(instr)
 	fmt.Printf("The result is: %d\n", result)
-}
-
-type mul struct {
-	a int
-	b int
 }
 
 func readFile(fileName string) string {
@@ -28,26 +25,52 @@ func readFile(fileName string) string {
 	return string(bytes)
 }
 
-func getInstructions(s string) []mul {
+func getInstructions(s string) []instruction {
 	re := regexp.MustCompile(`(?m)mul\(([1-9][0-9]{0,3}),([1-9][0-9]{0,3})\)`)
 	matches := re.FindAllStringSubmatch(s, -1)
-	muls := make([]mul, 0, len(matches))
+	muls := make([]instruction, 0, len(matches))
 	for i := range matches {
 		match := matches[i]
-		newMul := mul{
-			a: utils.StringToInt(match[1]),
-			b: utils.StringToInt(match[2]),
+		instrStr := match[0]
+		var instr instruction
+		if strings.HasPrefix(instrStr, "mul") {
+			instr = getMul(match)
+		} else if strings.HasPrefix(instrStr, "do") {
+			instr = do{}
+		} else if strings.HasPrefix(instrStr, "don't") {
+			instr = dont{}
 		}
-		muls = append(muls, newMul)
+
+		muls = append(muls, instr)
 	}
 
 	return muls
 }
 
-func calculate(muls []mul) uint64 {
+func getMul(match []string) instruction {
+	return mul{
+		a: utils.StringToInt(match[1]),
+		b: utils.StringToInt(match[2]),
+	}
+}
+
+func calculate(instructions []instruction) uint64 {
 	var result uint64
-	for _, m := range muls {
-		result += uint64(m.a) * uint64(m.b)
+	enabled := true
+	for _, instr := range instructions {
+		if reflect.TypeOf(instr).Name() == "do" {
+			enabled = true
+		} else if reflect.TypeOf(instr).Name() == "dont" {
+			enabled = false
+		}
+
+		if !enabled {
+			continue
+		}
+
+		if reflect.TypeOf(instr).Name() == "mul" {
+			result += instr.Execute().(uint64)
+		}
 	}
 
 	return result
