@@ -26,7 +26,7 @@ func readFile(fileName string) string {
 }
 
 func getInstructions(s string) []instruction {
-	re := regexp.MustCompile(`(?m)mul\(([1-9][0-9]{0,3}),([1-9][0-9]{0,3})\)`)
+	re := regexp.MustCompile(`(?m)(mul\(([1-9][0-9]{0,3}),([1-9][0-9]{0,3})\))|(do\(\))|(don't\(\))`)
 	matches := re.FindAllStringSubmatch(s, -1)
 	muls := make([]instruction, 0, len(matches))
 	for i := range matches {
@@ -34,24 +34,20 @@ func getInstructions(s string) []instruction {
 		instrStr := match[0]
 		var instr instruction
 		if strings.HasPrefix(instrStr, "mul") {
-			instr = getMul(match)
-		} else if strings.HasPrefix(instrStr, "do") {
-			instr = do{}
+			instr = mul{
+				a: utils.StringToInt(match[2]),
+				b: utils.StringToInt(match[3]),
+			}
 		} else if strings.HasPrefix(instrStr, "don't") {
 			instr = dont{}
+		} else if strings.HasPrefix(instrStr, "do") {
+			instr = do{}
 		}
 
 		muls = append(muls, instr)
 	}
 
 	return muls
-}
-
-func getMul(match []string) instruction {
-	return mul{
-		a: utils.StringToInt(match[1]),
-		b: utils.StringToInt(match[2]),
-	}
 }
 
 func calculate(instructions []instruction) uint64 {
