@@ -92,7 +92,8 @@ func diagonalSearchLTR(s string, in [][]rune) int {
 		count += strings.Count(stringDiagLine, utils.ReverseString(s))
 	}
 
-	for i := 0; i < width; i++ {
+	// Skip first col, because it's the same as in loop above (0,0)
+	for i := 1; i < width; i++ {
 		diag := utils.GetDiagonalLTR(in, i, false)
 		stringDiagLine := string(diag)
 		count += strings.Count(stringDiagLine, s)
@@ -112,7 +113,8 @@ func diagonalSearchRTL(s string, in [][]rune) int {
 		count += strings.Count(stringDiagLine, utils.ReverseString(s))
 	}
 
-	for i := 0; i < width; i++ {
+	// Skip first col, because it's the same as in loop above (0,0)
+	for i := 1; i < width; i++ {
 		diag := utils.GetDiagonalRTL(in, i, false)
 		stringDiagLine := string(diag)
 		count += strings.Count(stringDiagLine, s)
