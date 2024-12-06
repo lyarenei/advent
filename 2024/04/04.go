@@ -2,6 +2,7 @@ package _4
 
 import (
 	"2024/utils"
+	search2 "2024/utils/search"
 	"bufio"
 	"fmt"
 	"os"
@@ -12,6 +13,13 @@ func Run(inputFile string) {
 	arr := readFile(inputFile)
 	num := search("XMAS", arr)
 	fmt.Printf("Number of XMAS occurences in crossword: %d\n", num)
+
+	needle := []rune{'X', 'M', 'A', 'S'}
+	newNum := search2.Search2D(arr, needle, search2.Horizontal, true)
+	newNum += search2.Search2D(arr, needle, search2.Vertical, true)
+	newNum += search2.Search2D(arr, needle, search2.DiagonalFromLeft, true)
+	newNum += search2.Search2D(arr, needle, search2.DiagonalFromRight, true)
+	fmt.Printf("Number of XMAS occurences in crossword (using new search): %d\n", newNum)
 }
 
 func readFile(fileName string) [][]rune {

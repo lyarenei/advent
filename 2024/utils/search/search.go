@@ -2,7 +2,7 @@ package search
 
 import (
 	"2024/types"
-	"strconv"
+	"golang.org/x/exp/slices"
 )
 
 const (
@@ -13,9 +13,8 @@ const (
 )
 
 // TODO: multiple directions at once
-func Search2D[T types.BasicType](haystack [][]T, needle T, d Direction, includeReverse bool) int {
-	needleStr := strconv.Itoa(int(needle))
-	needleLen := len(needleStr)
+func Search2D[T types.BasicType](haystack [][]T, needle []T, d Direction, includeReverse bool) int {
+	needleLen := len(needle)
 	count := 0
 
 	for i, haystackRow := range haystack {
@@ -24,8 +23,16 @@ func Search2D[T types.BasicType](haystack [][]T, needle T, d Direction, includeR
 		}
 
 		for j := range haystackRow {
-			getLine(haystack, d, i, j, needleLen)
-			// compare
+			line := getLine(haystack, d, i, j, needleLen)
+			if slices.Equal(line, needle) {
+				count++
+			}
+
+			revNeedle := slices.Clone(needle)
+			slices.Reverse(revNeedle)
+			if includeReverse && slices.Equal(line, revNeedle) {
+				count++
+			}
 		}
 	}
 
