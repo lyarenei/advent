@@ -106,6 +106,83 @@ func Test_getLine(t *testing.T) {
 			},
 			want: []int{},
 		},
+		{
+			name: "Vertical (0,0)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      0,
+				col:      0,
+				len:      3,
+			},
+			want: []int{0, 4, 8, 12},
+		},
+		{
+			name: "Vertical (0,1)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      0,
+				col:      1,
+				len:      3,
+			},
+			want: []int{1, 5, 9, 13},
+		},
+		{
+			name: "Vertical (0,2)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      0,
+				col:      2,
+				len:      3,
+			},
+			want: []int{2, 6, 10, 14},
+		},
+		{
+			name: "Vertical (0,3)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      0,
+				col:      3,
+				len:      3,
+			},
+			want: []int{3, 7, 11, 15},
+		},
+		{
+			name: "Vertical (0,4)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      0,
+				col:      4,
+				len:      3,
+			},
+			want: []int{},
+		},
+		{
+			name: "Vertical (3,1)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      3,
+				col:      1,
+				len:      3,
+			},
+			want: []int{13},
+		},
+		{
+			name: "Vertical (4,4)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      4,
+				col:      4,
+				len:      3,
+			},
+			want: []int{},
+		},
 	}
 
 	for _, tt := range tests {

@@ -34,15 +34,15 @@ func Search2D[T types.BasicType](haystack [][]T, needle T, d Direction, includeR
 }
 
 func getLine[T types.BasicType](haystack [][]T, d Direction, row int, col int, lineLen int) []T {
-	if row >= len(haystack) {
+	if row >= len(haystack) || col >= len(haystack[0]) {
 		return []T{}
 	}
 
 	switch d {
 	case Horizontal:
 		return getHorizontalLine(haystack[row], col, lineLen)
-	//case Vertical:
-	//	return getVerticalLine(haystack, row, col, lineLen)
+	case Vertical:
+		return getVerticalLine(haystack, col, row, lineLen)
 	//case DiagonalFromLeft:
 	//
 	default:
@@ -57,4 +57,18 @@ func getHorizontalLine[T types.BasicType](haystack []T, start int, lineLen int) 
 	}
 
 	return haystack[start:end]
+}
+
+func getVerticalLine[T types.BasicType](haystack [][]T, col int, start int, lineLen int) []T {
+	end := lineLen + start
+	if len(haystack)-start < lineLen {
+		end = len(haystack) - 1
+	}
+
+	line := make([]T, 0, end)
+	for i := start; i <= end; i++ {
+		line = append(line, haystack[i][col])
+	}
+
+	return line
 }
