@@ -192,7 +192,7 @@ func Test_getLine(t *testing.T) {
 				col:      0,
 				len:      3,
 			},
-			want: []int{0, 5, 10, 15},
+			want: []int{0, 5, 10},
 		},
 		{
 			name: "Diagonal L (0,1)",
