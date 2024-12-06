@@ -21,17 +21,39 @@ func (po PrintOrder) GetMiddleValue() int {
 	return po.PageOrder[idx]
 }
 
+func (po PrintOrder) Fix(rules PrintRules, offendingNum int) {
+	idx := slices.Index(po.PageOrder, offendingNum)
+	if idx == -1 {
+		return
+	}
+
+	if idx == len(po.PageOrder) {
+		return
+	}
+
+	utils.Swap(po.PageOrder, idx, idx+1)
+	newNum, ok := isValid(rules, po.PageOrder)
+	if !ok {
+		po.Fix(rules, newNum)
+	}
+}
+
 func Run(inputFile string) {
 	rules, orders := readFile(inputFile)
-	sum := 0
+	sumValid := 0
+	sumFixed := 0
 	for _, order := range orders {
-		ok := isValid(rules, order.PageOrder)
+		offendingNum, ok := isValid(rules, order.PageOrder)
 		if ok {
-			sum += order.GetMiddleValue()
+			sumValid += order.GetMiddleValue()
+		} else {
+			order.Fix(rules, offendingNum)
+			sumFixed += order.GetMiddleValue()
 		}
 	}
 
-	fmt.Printf("The sum of all middle page numbers in valid printing rules is %d\n", sum)
+	fmt.Printf("The sum of all middle page numbers in valid printing rules is %d\n", sumValid)
+	fmt.Printf("The sum of all middle page numbers in fixed printing rules is %d\n", sumFixed)
 }
 
 func readFile(fileName string) (PrintRules, []PrintOrder) {
@@ -75,9 +97,9 @@ func readFile(fileName string) (PrintRules, []PrintOrder) {
 	return rules, orders
 }
 
-func isValid(rules PrintRules, order []int) bool {
+func isValid(rules PrintRules, order []int) (int, bool) {
 	if len(rules) == 0 || len(order) <= 1 {
-		return true
+		return 0, true
 	}
 
 	firstPage := order[0]
@@ -85,7 +107,7 @@ func isValid(rules PrintRules, order []int) bool {
 	pageRules, ok := rules[nextPage]
 	if ok {
 		if slices.Contains(pageRules, firstPage) {
-			return false
+			return firstPage, false
 		}
 	}
 

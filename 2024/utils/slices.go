@@ -109,3 +109,7 @@ func MapSlice[I any, O any](slice []I, function func(I) O) []O {
 
 	return newSlice
 }
+
+func Swap[T any](s []T, i int, j int) {
+	s[i], s[j] = s[j], s[i]
+}
