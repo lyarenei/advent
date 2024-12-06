@@ -115,7 +115,7 @@ func Test_getLine(t *testing.T) {
 				col:      0,
 				len:      3,
 			},
-			want: []int{0, 4, 8, 12},
+			want: []int{0, 4, 8},
 		},
 		{
 			name: "Vertical (0,1)",
@@ -126,7 +126,7 @@ func Test_getLine(t *testing.T) {
 				col:      1,
 				len:      3,
 			},
-			want: []int{1, 5, 9, 13},
+			want: []int{1, 5, 9},
 		},
 		{
 			name: "Vertical (0,2)",
@@ -137,7 +137,7 @@ func Test_getLine(t *testing.T) {
 				col:      2,
 				len:      3,
 			},
-			want: []int{2, 6, 10, 14},
+			want: []int{2, 6, 10},
 		},
 		{
 			name: "Vertical (0,3)",
@@ -148,7 +148,7 @@ func Test_getLine(t *testing.T) {
 				col:      3,
 				len:      3,
 			},
-			want: []int{3, 7, 11, 15},
+			want: []int{3, 7, 11},
 		},
 		{
 			name: "Vertical (0,4)",

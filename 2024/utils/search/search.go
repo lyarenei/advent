@@ -62,12 +62,12 @@ func getHorizontalLine[T types.BasicType](haystack []T, start int, lineLen int) 
 
 func getVerticalLine[T types.BasicType](haystack [][]T, col int, start int, lineLen int) []T {
 	end := start + lineLen
-	if end >= len(haystack) {
-		end = len(haystack) - 1
+	if end > len(haystack) {
+		end = len(haystack)
 	}
 
 	line := make([]T, 0, end)
-	for i := start; i <= end; i++ {
+	for i := start; i < end; i++ {
 		line = append(line, haystack[i][col])
 	}
 
