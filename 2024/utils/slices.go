@@ -100,3 +100,12 @@ func GetCol[T any](input [][]T, at int) []T {
 
 	return col
 }
+
+func MapSlice[I any, O any](slice []I, function func(I) O) []O {
+	newSlice := make([]O, 0, len(slice))
+	for _, item := range slice {
+		newSlice = append(newSlice, function(item))
+	}
+
+	return newSlice
+}
