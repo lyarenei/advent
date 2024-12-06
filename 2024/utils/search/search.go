@@ -10,7 +10,6 @@ const (
 	Vertical
 	DiagonalFromLeft
 	DiagonalFromRight
-	All
 )
 
 // TODO: multiple directions at once
@@ -34,7 +33,7 @@ func Search2D[T types.BasicType](haystack [][]T, needle T, d Direction, includeR
 }
 
 func getLine[T types.BasicType](haystack [][]T, d Direction, row int, col int, lineLen int) []T {
-	if row >= len(haystack) || col >= len(haystack[0]) {
+	if row >= len(haystack) || col >= len(haystack[row]) {
 		return []T{}
 	}
 
