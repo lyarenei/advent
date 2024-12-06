@@ -20,6 +20,9 @@ func Run(inputFile string) {
 	newNum += search2.Search2D(arr, needle, search2.DiagonalFromLeft, true)
 	newNum += search2.Search2D(arr, needle, search2.DiagonalFromRight, true)
 	fmt.Printf("Number of XMAS occurences in crossword (using new search): %d\n", newNum)
+
+	xNum := searchX(arr, []rune{'M', 'A', 'S'})
+	fmt.Printf("Number of X-MAS occurences in crossword: %d\n", xNum)
 }
 
 func readFile(fileName string) [][]rune {
@@ -127,6 +130,27 @@ func diagonalSearchRTL(s string, in [][]rune) int {
 		stringDiagLine := string(diag)
 		count += strings.Count(stringDiagLine, s)
 		count += strings.Count(stringDiagLine, utils.ReverseString(s))
+	}
+
+	return count
+}
+
+func searchX(haystack [][]rune, needle []rune) int {
+	edgeSize := len(needle)
+	count := 0
+	for i := 0; i < len(haystack); i++ {
+		for j := 0; j < len(haystack[i]); j++ {
+			subSlice := utils.Subslice2D(haystack, i, j, edgeSize)
+			if len(subSlice) < edgeSize {
+				break
+			}
+
+			onDiagLeft := search2.Search2D(subSlice, needle, search2.DiagonalFromLeft, true)
+			onDiagRight := search2.Search2D(subSlice, needle, search2.DiagonalFromRight, true)
+			if onDiagLeft == 1 && onDiagRight == 1 {
+				count++
+			}
+		}
 	}
 
 	return count
