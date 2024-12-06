@@ -239,7 +239,7 @@ func Test_getLine(t *testing.T) {
 			want: []int{},
 		},
 		{
-			name: "Diagonal (3,1)",
+			name: "Diagonal L (3,1)",
 			args: args[int]{
 				haystack: testArray,
 				d:        DiagonalFromLeft,
@@ -250,7 +250,84 @@ func Test_getLine(t *testing.T) {
 			want: []int{13},
 		},
 		{
-			name: "Diagonal (4,4)",
+			name: "Diagonal L (4,4)",
+			args: args[int]{
+				haystack: testArray,
+				d:        Vertical,
+				row:      4,
+				col:      4,
+				len:      3,
+			},
+			want: []int{},
+		},
+		{
+			name: "Diagonal R (0,3)",
+			args: args[int]{
+				haystack: testArray,
+				d:        DiagonalFromRight,
+				row:      0,
+				col:      3,
+				len:      3,
+			},
+			want: []int{3, 6, 9, 12},
+		},
+		{
+			name: "Diagonal R (0,2)",
+			args: args[int]{
+				haystack: testArray,
+				d:        DiagonalFromRight,
+				row:      0,
+				col:      2,
+				len:      3,
+			},
+			want: []int{2, 5, 8},
+		},
+		{
+			name: "Diagonal R (0,1)",
+			args: args[int]{
+				haystack: testArray,
+				d:        DiagonalFromRight,
+				row:      0,
+				col:      1,
+				len:      3,
+			},
+			want: []int{1, 4},
+		},
+		{
+			name: "Diagonal R (0,0)",
+			args: args[int]{
+				haystack: testArray,
+				d:        DiagonalFromRight,
+				row:      0,
+				col:      0,
+				len:      3,
+			},
+			want: []int{0},
+		},
+		{
+			name: "Diagonal R (0,4)",
+			args: args[int]{
+				haystack: testArray,
+				d:        DiagonalFromRight,
+				row:      0,
+				col:      4,
+				len:      3,
+			},
+			want: []int{},
+		},
+		{
+			name: "Diagonal R (3,1)",
+			args: args[int]{
+				haystack: testArray,
+				d:        DiagonalFromRight,
+				row:      3,
+				col:      1,
+				len:      3,
+			},
+			want: []int{13},
+		},
+		{
+			name: "Diagonal R (4,4)",
 			args: args[int]{
 				haystack: testArray,
 				d:        Vertical,

@@ -45,6 +45,8 @@ func getLine[T types.BasicType](haystack [][]T, d Direction, row int, col int, l
 		return getVerticalLine(haystack, col, row, lineLen)
 	case DiagonalFromLeft:
 		return getDiagonalLineFromLeft(haystack, row, col, lineLen)
+	case DiagonalFromRight:
+		return getDiagonalLineFromRight(haystack, row, col, lineLen)
 	default:
 		return []T{}
 	}
@@ -87,6 +89,25 @@ func getDiagonalLineFromLeft[T types.BasicType](haystack [][]T, startRow int, st
 	line := make([]T, 0)
 	for x, y := startRow, startCol; x <= rowEnd && y <= colEnd; x, y = x+1, y+1 {
 		line = append(line, haystack[x][y])
+	}
+
+	return line
+}
+
+func getDiagonalLineFromRight[T types.BasicType](haystack [][]T, startRow int, startCol int, lineLen int) []T {
+	endRow := startRow + lineLen
+	if endRow >= len(haystack[startRow]) {
+		endRow = len(haystack) - 1
+	}
+
+	endCol := startCol - lineLen
+	if endCol < 0 {
+		endCol = 0
+	}
+
+	line := make([]T, 0)
+	for row, col := startRow, startCol; row <= endRow && col >= endCol; row, col = row+1, col-1 {
+		line = append(line, haystack[row][col])
 	}
 
 	return line
