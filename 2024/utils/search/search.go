@@ -95,8 +95,8 @@ func getDiagonalLineFromLeft[T types.BasicType](haystack [][]T, startRow int, st
 
 func getDiagonalLineFromRight[T types.BasicType](haystack [][]T, startRow int, startCol int, lineLen int) []T {
 	endRow := startRow + lineLen
-	if endRow >= len(haystack[startRow]) {
-		endRow = len(haystack) - 1
+	if endRow > len(haystack[startRow]) {
+		endRow = len(haystack)
 	}
 
 	endCol := startCol - lineLen
@@ -105,7 +105,7 @@ func getDiagonalLineFromRight[T types.BasicType](haystack [][]T, startRow int, s
 	}
 
 	line := make([]T, 0)
-	for row, col := startRow, startCol; row <= endRow && col >= endCol; row, col = row+1, col-1 {
+	for row, col := startRow, startCol; row < endRow && col >= endCol; row, col = row+1, col-1 {
 		line = append(line, haystack[row][col])
 	}
 

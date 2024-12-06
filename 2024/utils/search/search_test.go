@@ -269,7 +269,7 @@ func Test_getLine(t *testing.T) {
 				col:      3,
 				len:      3,
 			},
-			want: []int{3, 6, 9, 12},
+			want: []int{3, 6, 9},
 		},
 		{
 			name: "Diagonal R (0,2)",
