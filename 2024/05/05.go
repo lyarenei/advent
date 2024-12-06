@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -14,9 +15,23 @@ type PrintOrder struct {
 	PageOrder []int
 }
 
+func (po PrintOrder) GetMiddleValue() int {
+	// Don't know rules for even lengths, leaving as is
+	idx := len(po.PageOrder) / 2
+	return po.PageOrder[idx]
+}
+
 func Run(inputFile string) {
 	rules, orders := readFile(inputFile)
-	fmt.Printf("Read printing rules for %d pages, there are %d printing orders\n", len(rules), len(orders))
+	sum := 0
+	for _, order := range orders {
+		ok := isValid(rules, order.PageOrder)
+		if ok {
+			sum += order.GetMiddleValue()
+		}
+	}
+
+	fmt.Printf("The sum of all middle page numbers in valid printing rules is %d\n", sum)
 }
 
 func readFile(fileName string) (PrintRules, []PrintOrder) {
@@ -58,4 +73,21 @@ func readFile(fileName string) (PrintRules, []PrintOrder) {
 	}
 
 	return rules, orders
+}
+
+func isValid(rules PrintRules, order []int) bool {
+	if len(rules) == 0 || len(order) <= 1 {
+		return true
+	}
+
+	firstPage := order[0]
+	nextPage := order[1]
+	pageRules, ok := rules[nextPage]
+	if ok {
+		if slices.Contains(pageRules, firstPage) {
+			return false
+		}
+	}
+
+	return isValid(rules, order[1:])
 }
