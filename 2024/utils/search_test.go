@@ -1,4 +1,4 @@
-package search
+package utils
 
 import (
 	"2024/types"
@@ -341,7 +341,7 @@ func Test_getLine(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := getLine(tt.args.haystack, tt.args.d, tt.args.row, tt.args.col, tt.args.len); !reflect.DeepEqual(got, tt.want) {
+			if got := GetLine(tt.args.haystack, tt.args.d, tt.args.row, tt.args.col, tt.args.len); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("getLine() = %v, want %v", got, tt.want)
 			}
 		})

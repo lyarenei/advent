@@ -1,3 +1,3 @@
-package search
+package utils
 
 type Direction int

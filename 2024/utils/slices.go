@@ -1,8 +1,7 @@
-package search
+package utils
 
 import (
 	"2024/types"
-	"golang.org/x/exp/slices"
 )
 
 const (
@@ -12,39 +11,12 @@ const (
 	DiagonalFromRight
 )
 
-// TODO: multiple directions at once
-func Search2D[T types.BasicType](haystack [][]T, needle []T, d Direction, includeReverse bool) int {
-	needleLen := len(needle)
-	count := 0
-
-	for i, haystackRow := range haystack {
-		if len(haystackRow) < needleLen {
-			continue
-		}
-
-		for j := range haystackRow {
-			line := getLine(haystack, d, i, j, needleLen)
-			if slices.Equal(line, needle) {
-				count++
-			}
-
-			revNeedle := slices.Clone(needle)
-			slices.Reverse(revNeedle)
-			if includeReverse && slices.Equal(line, revNeedle) {
-				count++
-			}
-		}
-	}
-
-	return count
-}
-
-func getLine[T types.BasicType](haystack [][]T, d Direction, row int, col int, lineLen int) []T {
+func GetLine[T types.BasicType](haystack [][]T, direction Direction, row int, col int, lineLen int) []T {
 	if row >= len(haystack) || col >= len(haystack[row]) {
 		return []T{}
 	}
 
-	switch d {
+	switch direction {
 	case Horizontal:
 		return getHorizontalLine(haystack[row], col, lineLen)
 	case Vertical:
@@ -117,4 +89,14 @@ func getDiagonalLineFromRight[T types.BasicType](haystack [][]T, startRow int, s
 	}
 
 	return line
+}
+
+// GetCol gets a nth col, in a 2D array.
+func GetCol[T any](input [][]T, at int) []T {
+	var col []T
+	for _, row := range input {
+		col = append(col, row[at])
+	}
+
+	return col
 }
