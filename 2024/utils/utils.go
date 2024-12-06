@@ -134,3 +134,23 @@ func GetDiagonalRTL[T any](input [][]T, anchor int, horizontal bool) []T {
 
 	return diag
 }
+
+func Subslice2D[T any](arr [][]T, startRow int, startCol int, edgeSize int) [][]T {
+	endRow := startRow + edgeSize
+	if endRow >= len(arr[startRow]) {
+		endRow = len(arr[startRow])
+	}
+
+	endCol := startCol + edgeSize
+	if endCol >= len(arr) {
+		endCol = len(arr)
+	}
+
+	subSlice := make([][]T, 0, edgeSize)
+	for i := startRow; i < endRow; i++ {
+		selectedRow := arr[i][startCol:endCol]
+		subSlice = append(subSlice, selectedRow)
+	}
+
+	return subSlice
+}
