@@ -125,10 +125,10 @@ func moveGuard(path []rune, direction Movement, startIdx int, endIdx int) {
 	case Up:
 		path[startIdx] = '>'
 	case Down:
-		path[startIdx] = '<'
+		path[endIdx] = '<'
 	case Left:
 		path[startIdx] = '^'
 	case Right:
-		path[startIdx] = 'v'
+		path[endIdx] = 'v'
 	}
 }
