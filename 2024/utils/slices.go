@@ -164,8 +164,8 @@ func setHorizontalLine[T any](arr [][]T, row int, col int, val []T) {
 		colEnd = len(arr[row])
 	}
 
-	for i := col; i < colEnd; i++ {
-		arr[row][i] = val[i]
+	for i, j := col, 0; i < colEnd; i, j = i+1, j+1 {
+		arr[row][i] = val[j]
 	}
 }
 
@@ -175,7 +175,7 @@ func setVerticalLine[T any](arr [][]T, row int, col int, val []T) {
 		rowEnd = len(arr)
 	}
 
-	for i := row; i < rowEnd; i++ {
-		arr[i][col] = val[i]
+	for i, j := row, 0; i < rowEnd; i, j = i+1, j+1 {
+		arr[i][col] = val[j]
 	}
 }
