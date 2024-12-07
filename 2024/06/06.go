@@ -123,8 +123,22 @@ func guardMove(arr [][]rune, direction Movement, row, col int, guard rune) {
 }
 
 func moveGuard(path []rune, direction Movement, startIdx int, endIdx int) {
-	for i := startIdx; i <= endIdx; i++ {
+	sIdx := startIdx
+	if startIdx < 0 {
+		sIdx = 0
+	}
+
+	eIdx := endIdx
+	if endIdx < 0 {
+		eIdx = len(path) - 1
+	}
+
+	for i := sIdx; i <= eIdx; i++ {
 		path[i] = 'x'
+	}
+
+	if startIdx < 0 || endIdx < 0 {
+		return
 	}
 
 	switch direction {
