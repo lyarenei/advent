@@ -151,6 +151,10 @@ func SetLine2D[T any](arr [][]T, direction Direction, row int, col int, val []T)
 	switch direction {
 	case Horizontal:
 		setHorizontalLine(arr, row, col, val)
+	case Vertical:
+		setVerticalLine(arr, row, col, val)
+	default:
+		// NOOP
 	}
 }
 
