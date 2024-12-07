@@ -134,6 +134,44 @@ func LastIndex[T comparable](s []T, needle T) int {
 	return -1
 }
 
-func SetLine2D[T any](arr [][]T, direction Direction, row int, col int, val []T) {
+func DeepClone[T any](s [][]T) [][]T {
+	clone := make([][]T, 0, len(s))
+	for _, row := range s {
+		cloneRow := make([]T, len(row))
+		copy(cloneRow, row)
+		clone = append(clone, cloneRow)
+	}
 
+	return clone
+}
+
+// SetLine2D sets a val from the anchor (row, col) up to the val length.
+// If val is longer than the arr, it will be automatically trimmed.
+func SetLine2D[T any](arr [][]T, direction Direction, row int, col int, val []T) {
+	switch direction {
+	case Horizontal:
+		setHorizontalLine(arr, row, col, val)
+	}
+}
+
+func setHorizontalLine[T any](arr [][]T, row int, col int, val []T) {
+	colEnd := col + len(val)
+	if colEnd >= len(arr[row]) {
+		colEnd = len(arr[row])
+	}
+
+	for i := col; i < colEnd; i++ {
+		arr[row][i] = val[i]
+	}
+}
+
+func setVerticalLine[T any](arr [][]T, row int, col int, val []T) {
+	rowEnd := row + len(val)
+	if rowEnd >= len(arr) {
+		rowEnd = len(arr)
+	}
+
+	for i := row; i < rowEnd; i++ {
+		arr[i][col] = val[i]
+	}
 }
