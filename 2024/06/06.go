@@ -14,6 +14,15 @@ func Run(inputFile string) {
 	fmt.Printf("The guard visited %d unique positions before leaving the lab\n", positions)
 }
 
+func printMap(arr [][]rune) {
+	for _, row := range arr {
+		for _, cell := range row {
+			fmt.Print(string(cell))
+		}
+		fmt.Println()
+	}
+}
+
 func readFile(fileName string) [][]rune {
 	file, err := os.Open(fileName)
 	defer func(file *os.File) {
@@ -54,10 +63,11 @@ func predictRoute(arr [][]rune) {
 		// Find guard position
 		row, col := utils.FindIdx2D(arr, guardAppearance)
 		if row == -1 && col == -1 {
+			printMap(arr)
 			return
 		}
 
-		guardMove(arr, currentDirection, row, col, guardAppearance)
+		guardMove(arr, currentDirection, row, col)
 		switch currentDirection {
 		case Up:
 			currentDirection = Right
