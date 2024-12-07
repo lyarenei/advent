@@ -113,3 +113,27 @@ func MapSlice[I any, O any](slice []I, function func(I) O) []O {
 func Swap[T any](s []T, i int, j int) {
 	s[i], s[j] = s[j], s[i]
 }
+
+func FirstIndex[T comparable](s []T, needle T) int {
+	for i := range s {
+		if s[i] == needle {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func LastIndex[T comparable](s []T, needle T) int {
+	for i := len(s) - 1; i >= 0; i-- {
+		if s[i] == needle {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func SetLine2D[T any](arr [][]T, direction Direction, row int, col int, val []T) {
+
+}

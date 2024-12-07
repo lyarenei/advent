@@ -30,3 +30,28 @@ func Search2D[T types.BasicType](haystack [][]T, needle []T, direction Direction
 
 	return count
 }
+
+func Search2DSimple[T comparable](haystack [][]T, needle T) int {
+	count := 0
+	for _, haystackRow := range haystack {
+		for _, item := range haystackRow {
+			if item == needle {
+				count++
+			}
+		}
+	}
+
+	return count
+}
+
+func FindIdx2D[T comparable](haystack [][]T, needle T) (int, int) {
+	for i, haystackRow := range haystack {
+		for j, item := range haystackRow {
+			if item == needle {
+				return i, j
+			}
+		}
+	}
+
+	return -1, -1
+}
