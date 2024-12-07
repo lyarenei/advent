@@ -95,6 +95,22 @@ func guardMove(arr [][]rune, direction Movement, row, col int, guard rune) {
 		obstacleIdx := utils.FirstIndex(line, '#')
 		// Move the guard to the obstacle
 		moveGuard(line, direction, 0, obstacleIdx-1)
+	case Down:
+		axis = utils.Vertical
+		// Get line from guard down to the bottom edge
+		line = utils.GetLine(arr, axis, row, col, len(arr))
+		// Find first obstacle for guard (guard is at the first position in line)
+		obstacleIdx := utils.FirstIndex(line, '#')
+		// Move the guard to the obstacle
+		moveGuard(line, direction, 0, obstacleIdx-1)
+	case Left:
+		axis = utils.Horizontal
+		// Get line from left edge up to the guard
+		line = utils.GetLine(arr, axis, row, 0, col+1)
+		// Find first obstacle for guard (guard is at the last position in line)
+		obstacleIdx := utils.LastIndex(line, '#')
+		// Move the guard (the obstacle is at obstacleIdx)
+		moveGuard(line, direction, obstacleIdx+1, len(line)-1)
 	}
 
 	utils.SetLine2D(arr, axis, 0, col, line)
