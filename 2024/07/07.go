@@ -18,7 +18,7 @@ func Run(inputFile string) {
 	sum := 0
 	for _, calibration := range calibrations {
 		res := isSolvable(
-			[]rune{'*', '+'},
+			[]rune{'*', '+', '|'},
 			calibration.Operands[0],
 			calibration.Operands[1],
 			calibration.Operands[2:],
@@ -77,6 +77,9 @@ func isSolvable(operators []rune, leftOp, rightOp int, nextOps []int, wantResult
 			newResult = leftOp * rightOp
 		case '+':
 			newResult = leftOp + rightOp
+		case '|':
+			concat := fmt.Sprintf("%d%d", leftOp, rightOp)
+			newResult = utils.StringToInt(concat)
 		default:
 			// noop
 		}
