@@ -17,9 +17,16 @@ func Run(inputFile string) {
 	calibrations := readFile(inputFile)
 	sum := 0
 	for _, calibration := range calibrations {
-		res := isSolvable([]rune{'*', '+'}, calibration.Operands, calibration.Result, 0)
+		res := isSolvable(
+			[]rune{'*', '+'},
+			calibration.Operands[0],
+			calibration.Operands[1],
+			calibration.Operands[2:],
+			calibration.Result,
+		)
+
 		if len(res) > 0 {
-			fmt.Printf("Calibration for %d: %v\n", calibration.Result, string(res))
+			//fmt.Printf("Calibration for %d: %v\n", calibration.Result, string(res))
 			sum += calibration.Result
 		}
 	}
@@ -58,64 +65,31 @@ func readFile(fileName string) []Calibration {
 	return calibrations
 }
 
-func isSolvable(operators []rune, operands []int, wantResult, interResult int) []rune {
-	if len(operators) == 0 || len(operands) == 0 {
+func isSolvable(operators []rune, leftOp, rightOp int, nextOps []int, wantResult int) []rune {
+	if len(operators) == 0 {
 		return []rune{}
 	}
 
-	if len(operands) == 1 {
-		newInterResult := -1
-		for _, operator := range operators {
-			switch operator {
-			case '*':
-				newInterResult = interResult * operands[0]
-			case '+':
-				newInterResult = interResult + operands[0]
-			default:
-				// noop
-			}
-
-			if newInterResult == wantResult {
-				return []rune{operator}
-			}
-		}
-
-		return []rune{}
-	}
-
-	newInterResult := -1
+	newResult := -1
 	for _, operator := range operators {
 		switch operator {
 		case '*':
-			if interResult == 0 {
-				newInterResult = operands[0] * operands[1]
-			} else {
-				newInterResult = interResult * operands[0]
-			}
+			newResult = leftOp * rightOp
 		case '+':
-			if interResult == 0 {
-				newInterResult = operands[0] + operands[1]
-			} else {
-				newInterResult = interResult + operands[0]
-			}
+			newResult = leftOp + rightOp
 		default:
 			// noop
 		}
 
-		var nextOperators []rune
-		if interResult == 0 {
-			nextOperators = isSolvable(operators, operands[2:], wantResult, newInterResult)
-		} else {
-			nextOperators = isSolvable(operators, operands[1:], wantResult, newInterResult)
-		}
-
-		if len(nextOperators) == 0 && newInterResult == wantResult {
+		if newResult == wantResult && len(nextOps) == 0 {
 			return []rune{operator}
 		}
 
-		if len(nextOperators) > 0 {
-			correctOps := []rune{operator}
-			return append(correctOps, nextOperators...)
+		if len(nextOps) > 0 {
+			nextOperators := isSolvable(operators, newResult, nextOps[0], nextOps[1:], wantResult)
+			if len(nextOperators) > 0 {
+				return append([]rune{operator}, nextOperators...)
+			}
 		}
 	}
 
