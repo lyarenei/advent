@@ -1,6 +1,6 @@
 package main
 
-import _7 "2024/07"
+import _9 "2024/09"
 
 const inputFile = "input.txt"
 
@@ -11,5 +11,6 @@ func main() {
 	//_4.Run(inputFile)
 	//_5.Run(inputFile)
 	//_6.Run(inputFile)
-	_7.Run(inputFile)
+	//_7.Run(inputFile)
+	_9.Run(inputFile)
 }
