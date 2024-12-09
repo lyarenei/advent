@@ -12,11 +12,12 @@ import (
 func Run(inputFile string) {
 	encodedFs := readFile(inputFile)
 	decodedFs := decodeFs(encodedFs)
+	compactFs(decodedFs)
 
 	keys := maps.Keys(decodedFs)
 	slices.Sort(keys)
 	for _, k := range keys {
-		fmt.Printf("%d: %v\n", k, decodedFs[k])
+		fmt.Printf("%d: %v\n", k, *decodedFs[k])
 	}
 }
 
@@ -45,8 +46,26 @@ type block struct {
 	Values    []int
 }
 
-func decodeFs(encodedFs string) map[int]block {
-	blocks := make(map[int]block)
+func (b *block) IsFull() bool {
+	return len(b.Values) == b.MaxLength
+}
+
+func (b *block) IsEmpty() bool {
+	return len(b.Values) == 0
+}
+
+func (b *block) Append(ID int) {
+	b.Values = append(b.Values, ID)
+}
+
+func (b *block) RemoveLast() int {
+	lastID := b.Values[len(b.Values)-1]
+	b.Values = b.Values[:len(b.Values)-1]
+	return lastID
+}
+
+func decodeFs(encodedFs string) map[int]*block {
+	blocks := make(map[int]*block)
 	blockID := 0
 
 	for i := 0; i < len(encodedFs); i += 2 {
@@ -71,7 +90,7 @@ func decodeFs(encodedFs string) map[int]block {
 			blockValues[j] = blockID
 		}
 
-		blocks[blockID] = block{
+		blocks[blockID] = &block{
 			ID:        blockID,
 			Values:    blockValues,
 			MaxLength: fileSize + freeSpace,
@@ -81,4 +100,26 @@ func decodeFs(encodedFs string) map[int]block {
 	}
 
 	return blocks
+}
+
+func compactFs(decodedFs map[int]*block) {
+	left := 0
+	right := len(decodedFs) - 1
+	for left < right {
+		dstBlock := decodedFs[left]
+		srcBlock := decodedFs[right]
+
+		if dstBlock.IsFull() {
+			left++
+			continue
+		}
+
+		if srcBlock.IsEmpty() {
+			right--
+			continue
+		}
+
+		fileBlock := srcBlock.RemoveLast()
+		dstBlock.Append(fileBlock)
+	}
 }
