@@ -13,12 +13,8 @@ func Run(inputFile string) {
 	encodedFs := readFile(inputFile)
 	decodedFs := decodeFs(encodedFs)
 	compactFs(decodedFs)
-
-	keys := maps.Keys(decodedFs)
-	slices.Sort(keys)
-	for _, k := range keys {
-		fmt.Printf("%d: %v\n", k, *decodedFs[k])
-	}
+	checksum := calculateChecksum(decodedFs)
+	fmt.Printf("The filesystem checksum is %d\n", checksum)
 }
 
 func readFile(fileName string) string {
@@ -122,4 +118,25 @@ func compactFs(decodedFs map[int]*block) {
 		fileBlock := srcBlock.RemoveLast()
 		dstBlock.Append(fileBlock)
 	}
+}
+
+func calculateChecksum(blocks map[int]*block) int {
+	globalPos := 0
+	checksum := 0
+
+	keys := maps.Keys(blocks)
+	slices.Sort(keys)
+	for _, k := range keys {
+		blk := blocks[k]
+		if blk.IsEmpty() {
+			break
+		}
+
+		for _, val := range blk.Values {
+			checksum += globalPos * val
+			globalPos++
+		}
+	}
+
+	return checksum
 }
