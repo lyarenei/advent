@@ -71,7 +71,7 @@ func decodeFs(encodedFs string) map[int]*block {
 	for i := 0; i < len(encodedFs); i += 2 {
 		end := i + 2
 		if end >= len(encodedFs) {
-			end = len(encodedFs) - 1
+			end = len(encodedFs)
 		}
 
 		encBlock := encodedFs[i:end]
